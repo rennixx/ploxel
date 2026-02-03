@@ -22,6 +22,12 @@ function GlobeMesh({
   const earthTexture = useTexture(
     'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg'
   )
+  if (earthTexture) {
+    earthTexture.anisotropy = 16
+    earthTexture.minFilter = THREE.LinearMipmapLinearFilter
+    earthTexture.magFilter = THREE.LinearFilter
+    earthTexture.wrapS = earthTexture.wrapT = THREE.ClampToEdgeWrapping
+  }
   const meshRef = useRef<THREE.Mesh>(null)
   const overlayRef = useRef<THREE.Mesh>(null)
   const [isDragging, setIsDragging] = useState(false)
@@ -80,11 +86,13 @@ function Controls() {
   return (
     <OrbitControls
       args={[camera, gl.domElement]}
-      enablePan={false}
+      enablePan
       enableDamping
       dampingFactor={0.08}
-      minDistance={6}
-      maxDistance={20}
+      minDistance={5.15}
+      maxDistance={30}
+      minPolarAngle={0.1}
+      maxPolarAngle={Math.PI - 0.1}
     />
   )
 }
