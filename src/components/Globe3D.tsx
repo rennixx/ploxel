@@ -91,7 +91,7 @@ function Controls() {
 
 export default function Globe3D({ onRegionSelect, drawingsTexture }: Globe3DProps) {
   return (
-    <Canvas camera={{ position: [0, 0, 15], fov: 45 }} style={{ width: '100%', height: '100vh' }}>
+    <Canvas camera={{ position: [0, 0, 15], fov: 45 }} className="h-full w-full">
       <Lighting />
       <GlobeMesh onRegionSelect={onRegionSelect} drawingsTexture={drawingsTexture} />
       <Controls />

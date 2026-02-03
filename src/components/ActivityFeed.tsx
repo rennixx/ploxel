@@ -78,7 +78,7 @@ export default function ActivityFeed() {
   }
 
   return (
-    <aside className="fixed right-6 top-24 hidden h-[70vh] w-[300px] flex-col gap-4 rounded-3xl border border-white/10 bg-black/50 p-4 text-left shadow-2xl backdrop-blur lg:flex">
+    <aside className="hidden h-full w-[320px] shrink-0 flex-col gap-4 border-l border-white/10 bg-black/40 p-4 text-left backdrop-blur-sm lg:flex">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-white/70">Live Activity</h3>
         <span className="text-xs text-white/40">{activities.length} events</span>

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useMemo, useState } from 'react'
 import Globe3D from '@/components/Globe3D'
@@ -68,22 +68,34 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-space-950 text-white">
-      <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 text-center">
-        <h1 className="text-5xl font-semibold tracking-tight">Ploxel 3D</h1>
-        <p className="mt-4 text-lg text-white/80">Draw on Earth, Share with the World</p>
-        <div className="mt-10 h-[60vh] w-full overflow-hidden rounded-2xl border border-neon-cyan/30 bg-white/5">
-          <Globe3D onRegionSelect={handleRegionSelect} />
+    <main className="flex h-screen flex-col overflow-hidden bg-space-950 text-white">
+      {/* Header */}
+      <header className="flex shrink-0 items-center justify-between border-b border-white/10 px-6 py-4 backdrop-blur-sm">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">Ploxel 3D</h1>
+          <p className="mt-0.5 text-sm text-white/60">Draw on Earth, Share with the World</p>
         </div>
-        {lastError ? <p className="mt-4 text-sm text-red-300">{lastError}</p> : null}
-      </div>
-      <ActivityFeed />
+        {lastError ? (
+          <p className="rounded-lg bg-red-500/20 px-3 py-1.5 text-sm text-red-300">{lastError}</p>
+        ) : null}
+      </header>
 
+      {/* Full-screen content: globe + sidebar */}
+      <div className="flex min-h-0 flex-1">
+        {/* Globe fills all remaining space */}
+        <section className="relative min-w-0 flex-1" aria-label="3D Globe">
+          <Globe3D onRegionSelect={handleRegionSelect} />
+        </section>
+        {/* Activity sidebar */}
+        <ActivityFeed />
+      </div>
+
+      {/* Drawing modal */}
       {selectedBounds ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6">
-          <div className="w-full max-w-5xl rounded-3xl border border-white/10 bg-space-950/95 p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-space-950/95 p-6 shadow-2xl">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Draw on this region</h2>
+              <h2 className="text-lg font-semibold">Draw on this region</h2>
               {isStamping ? (
                 <span className="text-sm text-neon-cyan">Stamping...</span>
               ) : null}
