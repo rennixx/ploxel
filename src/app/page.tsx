@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Globe3D from '@/components/Globe3D'
 import DrawingCanvas from '@/components/DrawingCanvas'
+import ActivityFeed from '@/components/ActivityFeed'
 import { calculateRegionBounds, type Bounds } from '@/lib/globe-utils'
 
 const DEFAULT_RADIUS_KM = 200
@@ -76,6 +77,7 @@ export default function HomePage() {
         </div>
         {lastError ? <p className="mt-4 text-sm text-red-300">{lastError}</p> : null}
       </div>
+      <ActivityFeed />
 
       {selectedBounds ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6">

@@ -18,7 +18,10 @@ function GlobeMesh({
   onRegionSelect?: (lat: number, long: number) => void
   drawingsTexture?: THREE.Texture
 }) {
-  const earthTexture = useTexture('/textures/earth-8k.jpg')
+  // Use a hosted earth texture (or put earth-8k.jpg in public/textures/ for a local 8k map)
+  const earthTexture = useTexture(
+    'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg'
+  )
   const meshRef = useRef<THREE.Mesh>(null)
   const overlayRef = useRef<THREE.Mesh>(null)
   const [isDragging, setIsDragging] = useState(false)

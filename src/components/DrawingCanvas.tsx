@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Bounds } from '@/lib/globe-utils'
 import DrawingTools from '@/components/DrawingTools'
+import AIEnhanceButton from '@/components/AIEnhanceButton'
 
 type Tool = 'pencil' | 'brush' | 'eraser'
 
@@ -38,6 +39,7 @@ export default function DrawingCanvas({ bounds, onComplete, onCancel }: DrawingC
     brushSize: 8,
     isDrawing: false
   })
+  const [snapshot, setSnapshot] = useState<string>('')
 
   const setupCanvas = useCallback(() => {
     const canvas = canvasRef.current
@@ -55,6 +57,8 @@ export default function DrawingCanvas({ bounds, onComplete, onCancel }: DrawingC
 
   useEffect(() => {
     setupCanvas()
+    const data = exportDrawing()
+    if (data) setSnapshot(data)
   }, [setupCanvas])
 
   const getPoint = (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -129,6 +133,8 @@ export default function DrawingCanvas({ bounds, onComplete, onCancel }: DrawingC
     setState((prev) => ({ ...prev, isDrawing: false }))
     lastPointRef.current = null
     pendingPointRef.current = null
+    const data = exportDrawing()
+    if (data) setSnapshot(data)
   }
 
   const clearCanvas = () => {
@@ -137,6 +143,8 @@ export default function DrawingCanvas({ bounds, onComplete, onCancel }: DrawingC
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    const data = exportDrawing()
+    if (data) setSnapshot(data)
   }
 
   const exportDrawing = () => {
@@ -149,6 +157,21 @@ export default function DrawingCanvas({ bounds, onComplete, onCancel }: DrawingC
     const imageData = exportDrawing()
     if (!imageData) return
     onComplete(imageData)
+  }
+
+  const applyEnhancedImage = (imageData: string) => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const img = new Image()
+    img.onload = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+      setSnapshot(imageData)
+    }
+    img.src = imageData
   }
 
   return (
@@ -180,6 +203,7 @@ export default function DrawingCanvas({ bounds, onComplete, onCancel }: DrawingC
       </div>
 
       <div className="flex items-center justify-end gap-3">
+        <AIEnhanceButton imageData={snapshot} onEnhanced={applyEnhancedImage} />
         <button
           type="button"
           onClick={onCancel}
